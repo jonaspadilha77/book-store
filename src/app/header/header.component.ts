@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CheckoutService } from '../pages/user/store/checkout.service';
+import { CheckoutService } from '../pages/user/checkout/checkout.service';
 import { Subscription } from 'rxjs';
 
 @Component({

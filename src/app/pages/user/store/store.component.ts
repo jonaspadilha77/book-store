@@ -2,7 +2,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { BookService } from '../../admin/book.service';
 import { Book } from '../../admin/book.model';
 import { Subscription } from 'rxjs';
-import { CheckoutService } from './checkout.service';
+import { CheckoutService } from '../checkout/checkout.service';
 
 @Component({
   selector: 'app-store',

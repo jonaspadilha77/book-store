@@ -8,6 +8,8 @@ import { AdminOrdersComponent } from './pages/admin/admin-orders/admin-orders.co
 import { AdminRegisterComponent } from './pages/admin/admin-register/admin-register.component';
 import { UserComponent } from './pages/user/user.component';
 import { StoreComponent } from './pages/user/store/store.component';
+import { CheckoutGuard } from './pages/user/checkout/checkoutGuard.service';
+import { CheckoutComponent } from './pages/user/checkout/checkout.component';
 
 
 const routes: Routes = [
@@ -22,7 +24,7 @@ const routes: Routes = [
   {
     path: 'user', component: UserComponent, children: [
       { path: 'store', component: StoreComponent },
-      { path: 'checkout', component: StoreComponent },
+      { path: 'checkout', component: CheckoutComponent, canActivate: [CheckoutGuard] },
     ]
   }
 ];

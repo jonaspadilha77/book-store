@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Book } from '../../admin/book.model';
+import { CheckoutService } from './checkout.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-checkout',
@@ -7,9 +10,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CheckoutComponent implements OnInit {
 
-  constructor() { }
+  public books: Book[];
+  private checkoutSubs: Subscription;
+
+  constructor(
+    private checkoutService: CheckoutService
+  ) { }
 
   ngOnInit() {
+    this.checkoutSubs = this.checkoutService.getItems().subscribe(books => this.books = books);
   }
 
 }

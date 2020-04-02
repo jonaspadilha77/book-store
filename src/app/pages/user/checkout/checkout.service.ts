@@ -21,10 +21,14 @@ export class CheckoutService {
     this.itemsSubs.next(this.items);
   }
 
+  public hasItens() {
+    return this.items.length > 0;
+  }
+
 
   public removeItem = (index: number) => {
     delete this.items[index];
-    this.items.filter(i => i);
+    this.items = this.items.filter(i => i);
     this.itemsSubs.next(this.items);
   }
 

@@ -17,6 +17,8 @@ import { CheckoutComponent } from './pages/user/checkout/checkout.component';
 
 import {HttpClientModule} from '@angular/common/http';
 import { BookComponent } from './book/book.component';
+import { CheckoutGuard } from './pages/user/checkout/checkoutGuard.service';
+import { CheckoutService } from './pages/user/checkout/checkout.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,7 +42,7 @@ import { BookComponent } from './book/book.component';
     BrowserAnimationsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [CheckoutService, CheckoutGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

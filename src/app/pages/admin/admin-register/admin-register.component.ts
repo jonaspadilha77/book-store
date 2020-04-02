@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
 import { BookService } from '../book.service';
 import { Book } from '../book.model';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-admin-register',
@@ -25,7 +25,11 @@ export class AdminRegisterComponent implements OnInit {
 
   private editMode = false;
 
-  constructor(private route: ActivatedRoute, private bookService: BookService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private bookService: BookService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
 
@@ -70,7 +74,25 @@ export class AdminRegisterComponent implements OnInit {
     const genre = Object.keys(this.genreOptions)
       .map(option => this.genreOptions[option] && option)
       .filter(option => option);
-    console.log(genre);
+
+    const book = new Book(
+      this.book.id,
+      this.book.name,
+      this.book.author,
+      genre,
+      this.book.language,
+      this.book.quantity
+    );
+
+    if (this.editMode) {
+      this.bookService.updateBook(book);
+    } else {
+      this.bookService.addBook(book);
+    }
+
+    this.bookService.getBooks().subscribe(() => {
+      this.router.navigate(['admin/products']);
+    });
   }
 
   checkGenreOptions(options: string[]) {

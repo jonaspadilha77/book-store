@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Book } from './book.model';
 import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
-import { catchError, map } from 'rxjs/operators';
+import { catchError, map, tap, finalize } from 'rxjs/operators';
 import { ReturnStatement } from '@angular/compiler';
 
 @Injectable({
@@ -27,7 +27,7 @@ export class BookService {
     private bookUrl = 'http://localhost:3000/stock';
 
     private loadData(): void {
-        this._fetchBooks().subscribe(res => {
+        this.fetchBooks().subscribe(res => {
             const books = res.map(item => new Book(
                 item.id,
                 item.name,
@@ -45,22 +45,56 @@ export class BookService {
         return this.booksListBS.asObservable();
     }
 
-    private _fetchBooks(): Observable<Book[]> {
+    private fetchBooks = (): Observable<Book[]> => {
         return this.http.get<Book[]>(this.bookUrl)
             .pipe(
                 catchError(this.handleError)
             );
     }
 
-    public getBook(id: number) {
+    public getBook = (id: number) => {
         return this.http.get<Book>(`${this.bookUrl}/${id}`)
             .pipe(
                 catchError(this.handleError)
             );
     }
 
+    public deleteBook = (id: number) => {
+        return this.http.delete(`${this.bookUrl}/${id}`)
+            .pipe(
+                tap({
+                    next: () => {
+                        this.loadData();
+                    }
+                }),
 
-    private handleError(error: HttpErrorResponse) {
+                catchError(this.handleError)
+            );
+    }
+
+    public updateBook = (book: Book) => {
+        this.http.put(`${this.bookUrl}/${book.id}`, book, this.httpOptions)
+            .pipe(
+                tap({
+                    next: () => {
+                        this.loadData();
+                    }
+                }),
+                catchError(this.handleError)
+            ).subscribe();
+    }
+
+    public addBook = (book: Book) => {
+        return this.http.post(`${this.bookUrl}`, book, this.httpOptions)
+            .pipe(
+                finalize(this.loadData),
+                catchError(this.handleError)
+            );
+
+    }
+
+
+    private handleError = (error: HttpErrorResponse) => {
         return throwError(error);
     }
 

@@ -39,9 +39,7 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
   }
 
   onDelete(id: number) {
-
+    this.bookService.deleteBook(id).subscribe();
   }
-
-
 
 }

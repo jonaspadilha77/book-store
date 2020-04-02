@@ -5,15 +5,22 @@
   <table>
     <tr>
       <th>Id</th>
-      <th>Produto</th>
-      <th>Ações</th>
+      <th>Name</th>
+      <th>Author</th>
+      <th>Genre</th>
+      <th>Language</th>
+      <th>Quantity</th>
     </tr>
-    <tr>
-      <td>Peter</td>
-      <td>Griffin</td>
+    <tr *ngFor="let book of books">
+      <td>{{ book.id }}</td>
+      <td>{{ book.name }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.language }}</td>
+      <td>{{ book.quantity }}</td>
       <td>
-        <button class="button button-success">Editar</button>
-        <button class="button button-danger">Deletar</button>
+        <button class="button button-success" (click)="openEdit(book.id)">Edit</button>
+        <button class="button button-danger">Delete</button>
       </td>
     </tr>
   </table>

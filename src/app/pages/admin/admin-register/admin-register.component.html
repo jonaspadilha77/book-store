@@ -1,39 +1,61 @@
 <div class="container">
-    <div class="padding row">
-        <form>
-            <label for="id">Name</label>
-            <input type="number" id="id" placeholder="Id..">
+  <div class="padding row">
+    <form [formGroup]="bookForm" (ngSubmit)="onSubmit(bookForm)">
+      <label for="id">Name</label>
+      <input type="number" id="id" placeholder="Id.." formControlName="id" [(ngModel)]="book.id">
 
-            <label for="name">Name</label>
-            <input type="text" id="name" placeholder="Name book..">
+      <label for="name">Name</label>
+      <input type="text" id="name" placeholder="Name book.." formControlName="name" [(ngModel)]="book.name">
 
-            <label for="author">Author</label>
-            <input type="text" id="author" placeholder="Author's name..">
+      <label for="author">Author</label>
+      <input type="text" id="author" placeholder="Author's name.." formControlName="author" [(ngModel)]="book.author">
 
-            <label for="genre">Genre</label>
-            <select id="genre" name="genre">
-                <option value="fantasy">Fantasy</option>
-                <option value="action">Action</option>
-                <option value="suspense">Suspense</option>
-                <option value="romance">Romance</option>
-                <option value="syfy">Syfy</option>
-                <option value="mystery">Mystery</option>
-            </select>
+      <label for="genre">Genre</label>
+      <br>
+      <ul class="genre-menu">
+        <li>
+          <input type="checkbox" class="genre-menu-item" (change)="genreOptions.fantasy = !genreOptions.fantasy"  [checked]="genreOptions.fantasy" />
+          <span class="genre-menu-label">Fantasy</span>
+        </li>
+        <li>
+          <input type="checkbox" class="genre-menu-item" (change)="genreOptions.action = !genreOptions.action"   [checked]="genreOptions.action" />
+          <span class="genre-menu-label">Action</span>
+        </li>
+        <li>
+          <input type="checkbox" class="genre-menu-item"  (change)="genreOptions.suspense = !genreOptions.suspense"  [checked]="genreOptions.suspense" />
+          <span class="genre-menu-label">Suspense</span>
+        </li>
+        <li>
+          <input type="checkbox" class="genre-menu-item" (change)="genreOptions.romance = !genreOptions.romance" value="romance" [checked]="genreOptions.romance" />
+          <span class="genre-menu-label">Romance</span>
+        </li>
+        <li>
+          <input type="checkbox" class="genre-menu-item" (change)="genreOptions.syfy = !genreOptions.syfy" [checked]="genreOptions.syfy" />
+          <span class="genre-menu-label">Syfy</span>
+        </li>
+        <li>
+          <input type="checkbox" class="genre-menu-item" (change)="genreOptions.mistery = !genreOptions.mistery" [checked]="genreOptions.mistery"/>
+          <span class="genre-menu-label">Mystery</span>
+        </li>
+      </ul>
 
 
-            <label for="language">Language</label>
-            <select id="language" name="language">
-                <option value="english">English</option>
-                <option value="chinese">Chinese</option>
-                <option value="portuguese">Portuguese</option>
-                <option value="france">France</option>
-                <option value="spanish">Spanish</option>
-            </select>
 
-            <label for="id">Quantity</label>
-            <input type="number" id="quantity" placeholder="Quantity..">
 
-            <input type="submit" value="Submit">
-          </form>
-    </div>
+      <label for="language">Language</label>
+      <select id="language" name="language" [(ngModel)]="book.language" formControlName="language">
+        <option value="english">English</option>
+        <option value="chinese">Chinese</option>
+        <option value="portuguese">Portuguese</option>
+        <option value="france">France</option>
+        <option value="spanish">Spanish</option>
+      </select>
+
+      <label for="id">Quantity</label>
+      <input type="number" id="quantity" placeholder="Quantity.." [(ngModel)]="book.quantity"
+        formControlName="quantity">
+
+      <input type="submit" value="Submit">
+    </form>
+  </div>
 </div>

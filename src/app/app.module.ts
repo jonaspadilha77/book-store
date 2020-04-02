@@ -16,6 +16,7 @@ import { StoreComponent } from './pages/user/store/store.component';
 import { CheckoutComponent } from './pages/user/checkout/checkout.component';
 
 import {HttpClientModule} from '@angular/common/http';
+import { BookComponent } from './book/book.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,6 +29,7 @@ import {HttpClientModule} from '@angular/common/http';
     UserComponent,
     StoreComponent,
     CheckoutComponent,
+    BookComponent,
 
   ],
   imports: [

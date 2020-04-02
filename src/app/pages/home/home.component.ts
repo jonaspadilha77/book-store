@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { BookService } from '../admin/book.service';
 
 @Component({
   selector: 'app-home',
@@ -9,11 +10,12 @@ export class HomeComponent implements OnInit {
 
   public authorName: string;
 
-  constructor() {
+  constructor(private bookService: BookService) {
     this.authorName = 'Jonas Padilha';
   }
 
   ngOnInit() {
+
   }
 
 }

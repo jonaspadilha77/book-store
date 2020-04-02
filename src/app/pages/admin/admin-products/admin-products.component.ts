@@ -42,4 +42,8 @@ export class AdminProductsComponent implements OnInit, OnDestroy {
     this.bookService.deleteBook(id).subscribe();
   }
 
+  openNew() {
+    this.router.navigate(['./new'], { relativeTo: this.route });
+  }
+
 }

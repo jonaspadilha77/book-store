@@ -62,12 +62,7 @@ export class BookService {
     public deleteBook = (id: number) => {
         return this.http.delete(`${this.bookUrl}/${id}`)
             .pipe(
-                tap({
-                    next: () => {
-                        this.loadData();
-                    }
-                }),
-
+                finalize(() => this.loadData()),
                 catchError(this.handleError)
             );
     }
@@ -85,14 +80,14 @@ export class BookService {
     }
 
     public addBook = (book: Book) => {
-        return this.http.post(`${this.bookUrl}`, book, this.httpOptions)
+        this.http.post(`${this.bookUrl}`, book, this.httpOptions)
             .pipe(
-                finalize(this.loadData),
+                finalize(() => this.loadData()),
                 catchError(this.handleError)
-            );
+            )
+            .subscribe();
 
     }
-
 
     private handleError = (error: HttpErrorResponse) => {
         return throwError(error);

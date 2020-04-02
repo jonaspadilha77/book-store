@@ -18,7 +18,7 @@ li a {
   text-decoration: none;
 }
 
-li a:hover {
+li a:hover, li a.active {
   background-color: #0f7492;
   cursor: pointer;
 }

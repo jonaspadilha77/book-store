@@ -6,6 +6,8 @@ import { AdminProductsComponent } from './pages/admin/admin-products/admin-produ
 import { BookComponent } from './book/book.component';
 import { AdminOrdersComponent } from './pages/admin/admin-orders/admin-orders.component';
 import { AdminRegisterComponent } from './pages/admin/admin-register/admin-register.component';
+import { UserComponent } from './pages/user/user.component';
+import { StoreComponent } from './pages/user/store/store.component';
 
 
 const routes: Routes = [
@@ -15,6 +17,12 @@ const routes: Routes = [
       { path: 'products', component: AdminProductsComponent },
       { path: 'products/new', component: AdminRegisterComponent },
       { path: 'products/:id/edit', component: AdminRegisterComponent }
+    ]
+  },
+  {
+    path: 'user', component: UserComponent, children: [
+      { path: 'store', component: StoreComponent },
+      { path: 'checkout', component: StoreComponent },
     ]
   }
 ];

@@ -1,16 +1,26 @@
 <div class="padding">
-    <table>
-      <tr>
-        <th>Product</th>
-        <th>Quantity</th>
-        <th>Action</th>
-      </tr>
-      <tr>
-        <td>Griffin</td>
-        <td><input type="number"></td>
-        <td>
-          <button class="button button-success">Add</button>
-        </td>
-      </tr>
-    </table>
-  </div>
+  <table>
+    <tr>
+      <th>Id</th>
+      <th>Name</th>
+      <th>Author</th>
+      <th>Genre</th>
+      <th>Language</th>
+      <th>Available</th>
+      <th>Quantity</th>
+    </tr>
+    <tr *ngFor="let book of books">
+      <td>{{ book.id }}</td>
+      <td>{{ book.name }}</td>
+      <td>{{ book.author }}</td>
+      <td>{{ book.genre }}</td>
+      <td>{{ book.language }}</td>
+      <td>{{ book.quantity }}</td>
+      <td><input type="number" #quantity></td>
+      <td>
+        <button class="button button-success" (click)="addToWishList(book, quantity.value)">Add</button>
+      </td>
+    </tr>
+  </table>
+</div>
+

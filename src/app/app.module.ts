@@ -19,6 +19,8 @@ import {HttpClientModule} from '@angular/common/http';
 import { BookComponent } from './book/book.component';
 import { CheckoutGuard } from './pages/user/checkout/checkoutGuard.service';
 import { CheckoutService } from './pages/user/checkout/checkout.service';
+import { NumberDirective } from './directives/number.directive';
+import { TextDirective } from './directives/text.directive';
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,6 +34,8 @@ import { CheckoutService } from './pages/user/checkout/checkout.service';
     StoreComponent,
     CheckoutComponent,
     BookComponent,
+    NumberDirective,
+    TextDirective
 
   ],
   imports: [

@@ -16,11 +16,24 @@
       <td>{{ book.genre }}</td>
       <td>{{ book.language }}</td>
       <td>{{ book.quantity }}</td>
-      <td><input type="number" #quantity></td>
+      <td>
+        <form [formGroup]="storeForm">
+          <input
+            appNumber="true"
+            formControlName="quantity"
+            #quantity
+            (change)="(testValidationForm(book.id))"
+            [ngClass]="{ 'invalid': submitted &&  storeFormErrors.length && currentAddId == book.id }"
+          >
+          <div *ngIf="submitted && storeFormErrors.length && currentAddId == book.id" class="invalid-feedback">
+            <p>Quantity value is required!</p>
+          </div>
+        </form>
+      </td>
+
       <td>
         <button class="button button-success" (click)="addToWishList(book, quantity.value)">Add</button>
       </td>
     </tr>
   </table>
 </div>
-

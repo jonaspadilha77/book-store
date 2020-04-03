@@ -11,7 +11,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class AdminRegisterComponent implements OnInit {
 
-  public cadastroForm: FormGroup;
   public book: Book = new Book();
   public bookForm: FormGroup;
   public genreOptions = {
@@ -64,9 +63,6 @@ export class AdminRegisterComponent implements OnInit {
         Validators.required
       ])
     });
-
-    console.log(this.book);
-
   }
 
 

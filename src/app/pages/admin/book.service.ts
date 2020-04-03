@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Book } from './book.model';
-import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
-import { catchError, map, tap, finalize } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject, Subject, of, forkJoin } from 'rxjs';
+import { catchError, map, tap, finalize, mergeMap } from 'rxjs/operators';
 import { ReturnStatement } from '@angular/compiler';
 
 @Injectable({
@@ -52,14 +52,14 @@ export class BookService {
             );
     }
 
-    public getBook = (id: number) => {
+    public getBook = (id: number): Observable<Book> => {
         return this.http.get<Book>(`${this.bookUrl}/${id}`)
             .pipe(
                 catchError(this.handleError)
             );
     }
 
-    public deleteBook = (id: number) => {
+    public deleteBook = (id: number): Observable<any> => {
         return this.http.delete(`${this.bookUrl}/${id}`)
             .pipe(
                 finalize(() => this.loadData()),
@@ -67,7 +67,7 @@ export class BookService {
             );
     }
 
-    public updateBook = (book: Book) => {
+    public updateBook = (book: Book): void => {
         this.http.put(`${this.bookUrl}/${book.id}`, book, this.httpOptions)
             .pipe(
                 tap({
@@ -79,7 +79,7 @@ export class BookService {
             ).subscribe();
     }
 
-    public addBook = (book: Book) => {
+    public addBook = (book: Book): void => {
         this.http.post(`${this.bookUrl}`, book, this.httpOptions)
             .pipe(
                 finalize(() => this.loadData()),
@@ -91,6 +91,11 @@ export class BookService {
 
     private handleError = (error: HttpErrorResponse) => {
         return throwError(error);
+    }
+
+    public orderFinalize = (ids: number[]): Observable<any> => {
+        const allDeleteIds = ids.map(id => this.deleteBook(id));
+        return forkJoin(allDeleteIds);
     }
 
 }

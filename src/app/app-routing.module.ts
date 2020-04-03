@@ -17,8 +17,10 @@ const routes: Routes = [
   {
     path: 'admin', component: AdminComponent, children: [
       { path: 'products', component: AdminProductsComponent },
+      { path: 'orders', component: AdminOrdersComponent },
       { path: 'products/new', component: AdminRegisterComponent },
-      { path: 'products/:id/edit', component: AdminRegisterComponent }
+      { path: 'products/:id/edit', component: AdminRegisterComponent },
+
     ]
   },
   {

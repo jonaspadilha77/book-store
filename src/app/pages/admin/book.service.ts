@@ -27,17 +27,7 @@ export class BookService {
     private bookUrl = 'http://localhost:3000/stock';
 
     private loadData(): void {
-        this.fetchBooks().subscribe(res => {
-            const books = res.map(item => new Book(
-                item.id,
-                item.name,
-                item.author,
-                item.genre,
-                item.language,
-                item.quantity
-            ));
-            this.booksListBS.next(books);
-        });
+        this.fetchBooks().subscribe();
     }
 
 
@@ -48,6 +38,10 @@ export class BookService {
     private fetchBooks = (): Observable<Book[]> => {
         return this.http.get<Book[]>(this.bookUrl)
             .pipe(
+                map((books: Book[]) => books),
+                tap({
+                    next: (books) => this.booksListBS.next(books)
+                }),
                 catchError(this.handleError)
             );
     }
@@ -67,8 +61,8 @@ export class BookService {
             );
     }
 
-    public updateBook = (book: Book): void => {
-        this.http.put(`${this.bookUrl}/${book.id}`, book, this.httpOptions)
+    public updateBook = (book: Book): Observable<any> => {
+        return this.http.put(`${this.bookUrl}/${book.id}`, book, this.httpOptions)
             .pipe(
                 tap({
                     next: () => {
@@ -76,26 +70,28 @@ export class BookService {
                     }
                 }),
                 catchError(this.handleError)
-            ).subscribe();
+            );
     }
 
-    public addBook = (book: Book): void => {
-        this.http.post(`${this.bookUrl}`, book, this.httpOptions)
+    public addBook = (book: Book): Observable<any> => {
+        return this.http.post(`${this.bookUrl}`, book, this.httpOptions)
             .pipe(
                 finalize(() => this.loadData()),
                 catchError(this.handleError)
-            )
-            .subscribe();
-
+            );
     }
 
     private handleError = (error: HttpErrorResponse) => {
         return throwError(error);
     }
 
-    public orderFinalize = (ids: number[]): Observable<any> => {
-        const allDeleteIds = ids.map(id => this.deleteBook(id));
-        return forkJoin(allDeleteIds);
+    public orderFinalize = (books: Book[]): Observable<any> => {
+        return forkJoin(books.map(book => {
+            if (book.quantity === 1) {
+                return this.deleteBook(book.id);
+            } else {
+                return this.updateBook(book);
+            }
+        }));
     }
-
 }

@@ -71,19 +71,13 @@ export class AdminRegisterComponent implements OnInit {
       .map(option => this.genreOptions[option] && option)
       .filter(option => option);
 
-    const book = new Book(
-      this.book.id,
-      this.book.name,
-      this.book.author,
-      genre,
-      this.book.language,
-      this.book.quantity
-    );
+    const book = this.book;
+    book.genre = genre;
 
     if (this.editMode) {
-      this.bookService.updateBook(book);
+      this.bookService.updateBook(book).subscribe();
     } else {
-      this.bookService.addBook(book);
+      this.bookService.addBook(book).subscribe();
     }
 
     this.bookService.getBooks().subscribe(() => {

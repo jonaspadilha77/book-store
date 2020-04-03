@@ -54,6 +54,8 @@ export class StoreComponent implements OnInit, OnDestroy {
     }
 
     if (book.quantity >= quantity) {
+      const updateBook = book;
+      updateBook.quantity = updateBook.quantity - quantity;
       this.checkoutService.addItem(book);
     } else {
       alert('insufficient stock');

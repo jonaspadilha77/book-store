@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Book } from '../../admin/book.model';
 import { CheckoutService } from './checkout.service';
 import { Subscription } from 'rxjs';
@@ -11,10 +11,9 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.scss']
 })
-export class CheckoutComponent implements OnInit {
+export class CheckoutComponent implements OnInit, OnDestroy {
 
   public books: Book[];
-  private bookIds: number[];
   private checkoutSubs: Subscription;
 
   constructor(
@@ -25,18 +24,17 @@ export class CheckoutComponent implements OnInit {
 
   ngOnInit() {
     this.checkoutSubs = this.checkoutService.getItems()
-      .pipe(
-        tap(books => {
-          this.bookIds = books.map(i => i.id);
-        })
-      )
       .subscribe(books => {
         this.books = books;
       });
   }
 
+  ngOnDestroy() {
+    this.checkoutSubs.unsubscribe();
+  }
+
   finalize = () => {
-    this.checkoutService.updateOrderList(this.bookIds)
+    this.checkoutService.updateOrderList(this.books)
       .subscribe(
         {
           next: () => this.router.navigate(['../store'], { relativeTo: this.route }),

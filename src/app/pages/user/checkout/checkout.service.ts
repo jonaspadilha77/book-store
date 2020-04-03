@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, throwError, forkJoin } from 'rxjs';
 import { Book } from '../../admin/book.model';
 import { HttpHeaders, HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError, finalize, mergeMap } from 'rxjs/operators';
+import { catchError, finalize, mergeMap, map, tap } from 'rxjs/operators';
 import { BookService } from '../../admin/book.service';
 
 @Injectable({
@@ -34,32 +34,30 @@ export class CheckoutService {
   }
 
   private loadData(): void {
-    this.fetchCheckout().subscribe(res => {
-      const books = res.map(item => new Book(
-        item.id,
-        item.name,
-        item.author,
-        item.genre,
-        item.language,
-        item.quantity
-      ));
-      this.itemsSubs.next(books);
-    });
+    this.fetchCheckout().subscribe();
   }
 
-  private fetchCheckout = (): Observable<Book[]> => {
+  private fetchCheckout = (): Observable<any> => {
     return this.http.get<Book[]>(this.checkoutkUrl)
       .pipe(
+        map((books: Book[]) => books),
+        tap({
+          next: (books) => this.itemsSubs.next(books)
+        }),
         catchError(this.handleError)
       );
   }
 
   public addItem = (book: Book) => {
+    if (this.items.length) {
+      this.items = this.items.filter(value => {
+        return value.id !== book.id;
+      });
+    }
+
     this.items.push(book);
     this.itemsSubs.next(this.items);
   }
-
-
 
   public hasItens() {
     return this.items.length > 0;
@@ -71,10 +69,10 @@ export class CheckoutService {
     this.itemsSubs.next(this.items);
   }
 
-  public updateOrderList = (bookIds: number[]): Observable<any> => {
+  public updateOrderList = (books: Book[]): Observable<any> => {
     return this.http.post(`${this.checkoutkUrl}`, this.items, this.httpOptions)
       .pipe(
-        mergeMap(() => this.bookService.orderFinalize(bookIds)),
+        mergeMap(() => this.bookService.orderFinalize(books)),
         catchError(this.handleError)
       );
 
